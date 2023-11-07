@@ -1,8 +1,8 @@
 import { Children } from 'react';
 import classNames from 'classnames/bind';
-import Header from './Header';
+import Header from '../components/Header';
+import Sidebar from '../components/Sidebar';
 import styles from './DefaultLayout.module.scss';
-import Sidebar from './Sidebar';
 
 const cx = classNames.bind(styles);
 

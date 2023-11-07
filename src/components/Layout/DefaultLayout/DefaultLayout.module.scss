@@ -5,11 +5,13 @@
 }
 
 .container {
+    margin-top: 62px;
     min-height: 1000px;
     display: flex;
 }
 
 .content {
     flex: 1;
-    background-color: white;
+    margin-left: 250px;
+    background-color: rgb(208, 204, 204);
 }
