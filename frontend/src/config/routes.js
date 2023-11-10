@@ -5,6 +5,7 @@ const routes = {
     store: '/store',
     impWarehouse: '/impWarehouse',
     expWarehouse: '/expWarehouse',
+    addWarehouse: '/impWarehouse/addWarehouse',
 };
 
 export default routes;

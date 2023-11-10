@@ -5,8 +5,9 @@ import Home from '~/pages/Home';
 import Category from '~/pages/Category';
 import Orders from '~/pages/Orders';
 import Store from '~/pages/Store';
-import ImpWarehouse from '~/pages/ExpWarehouse';
-import ExpWarehouse from '~/pages/ImpWarehouse';
+import ImpWarehouse from '~/pages/ImpWarehouse';
+import ExpWarehouse from '~/pages/ExpWarehouse';
+import AddWarehouse from '~/pages/ImpWarehouse/AddWarehouse';
 
 // Public routes
 const publicRoutes = [
@@ -16,6 +17,7 @@ const publicRoutes = [
     { path: config.routes.store, component: Store },
     { path: config.routes.impWarehouse, component: ImpWarehouse },
     { path: config.routes.expWarehouse, component: ExpWarehouse, layout: null },
+    { path: config.routes.addWarehouse, component: AddWarehouse },
 ];
 
 const privateRoutes = [];
