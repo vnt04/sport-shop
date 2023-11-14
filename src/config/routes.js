@@ -1,11 +1,16 @@
 const routes = {
     home: '/',
-    category: '/category',
+    products: '/products',
+    suppliers:'/suppliers',
+    addSupplier:'/suppliers/add',
     orders: '/orders',
     store: '/store',
-    impWarehouse: '/impWarehouse',
-    expWarehouse: '/expWarehouse',
-    addWarehouse: '/impWarehouse/add',
+    addStock: '/stockIn/add',
+    stockIn: '/stockIn',
+    stockOut: '/stockOut',
+    statistics: '/statistics',
+    users: '/users',
+    addUser: '/users/add'
 };
 
 export default routes;

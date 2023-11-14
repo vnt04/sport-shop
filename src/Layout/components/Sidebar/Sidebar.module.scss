@@ -1,0 +1,17 @@
+.wrapper {
+    position: fixed;
+    height: 100%;
+    width: 250px;
+    overflow-y: scroll;
+    background-color: rgb(48, 154, 170);
+}
+.footer-sidebar {
+    button {
+        border-radius: 97px;
+        width: 100px;
+        margin-top: 60px;
+        margin-left: 50px;
+        color: white;
+        background-color: rgb(48, 154, 170);
+    }
+}

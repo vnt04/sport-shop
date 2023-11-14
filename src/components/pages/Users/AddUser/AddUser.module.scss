@@ -1,0 +1,36 @@
+//css Receipt ( tạo mới đơn nhập kho)
+.phieu-nhap-ncc {
+    height: 100vh;
+    width: 100%;
+}
+.dieu-huong-phieu-nhap {
+    display: flex;
+    align-items: center;
+    height: 8%;
+}
+.ten-phieu-nhap {
+    font-size: 2.2rem;
+    margin-top: 15px;
+    font-weight: 500;
+}
+.backButton {
+    width: 50px;
+    margin-top: 9px;
+    background-color: transparent;
+    font-size: 2.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+.chi-tiet-phieu-nhap {
+    height: 500px;
+    width: 90%;
+    margin-top: 30px;
+    background-color: white;
+    margin-left: 60px;
+    border: 1px solid black;
+}
+.custom-input {
+    font-size: 20px;
+    padding: 10px;
+}

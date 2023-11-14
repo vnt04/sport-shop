@@ -1,0 +1,59 @@
+// Danh sách nhập kho
+
+.wrapper {
+    height: 80%;
+    width: 100%;
+}
+
+.header-nhap-kho {
+    height: 7%;
+    display: flex;
+    align-items: center;
+    padding: 00px 20px;
+
+    h1 {
+        font-size: 2.2rem;
+    }
+    button {
+        width: 100px;
+        height: 35px;
+        margin-left: 75%;
+        font-size: 2rem;
+        align-content: center;
+        cursor: pointer;
+        color: white;
+        background-color: green;
+    }
+}
+.danh-sach-nhap-kho {
+    height: 100%;
+    margin: 20px 20px;
+    border: 1px solid black;
+}
+
+.filter {
+    display: flex;
+    //align-items: center;
+    height: 8%;
+}
+.time {
+    display: flex;
+    margin-left: 50%;
+    padding: 22.5px 0px;
+
+    height: 100%;
+    p {
+        padding: 0px 10px;
+    }
+}
+
+.button-search {
+    width: 50px;
+    height: 30px;
+    margin-left: 10px;
+    margin-top: 20px;
+    color: white;
+    background-color: green;
+    cursor: pointer;
+    padding: 0px 10px;
+}
