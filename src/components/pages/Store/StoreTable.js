@@ -18,64 +18,36 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'tenNv',
-    label: 'Tên nhân viên',
+    id: 'tenSP',
+    label: 'Tên sản phẩm',
     minWidth: 100,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'chucVu',
-    label: 'Chức vụ',
+    id: 'img',
+    label: 'Hình ảnh',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'day',
-    label: 'Ngày sinh',
+    id: 'gia',
+    label: 'Giá bán',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'sex',
-    label: 'Giới tính',
+    id: 'soLuong',
+    label: 'Số lượng',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'luongThang',
-    label: 'Lương',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'maThue',
-    label: 'Mã số thuế',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'sdt',
-    label: 'Số điện thoại',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'mail',
-    label: 'Email',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'address',
-    label: 'Địa chỉ',
+    id: 'dvt',
+    label: 'Đơn vị tính',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
@@ -89,20 +61,20 @@ const columns = [
   },
 ];
 
- function UsersTable() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [data, setData] = useState([]);
+function StoreTable() {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [data, setData] = useState([]);
 
-  useEffect(() => {
-    axios.get('http://localhost:3005/user/read')
-      .then(function (response) {
-        setData(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }, []);
+    useEffect(() => {
+        axios.get('http://localhost:3005/user/read')
+        .then(function (response) {
+            setData(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+    }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -161,7 +133,7 @@ const columns = [
                                                 style={{ fontSize: '1.26rem' }}
                                             >
                                                 {column.format && typeof value === 'number'
-                                        ? column.format(value)
+                                                    ? column.format(value)
                                                     : value}
                                             </TableCell>
                                         );
@@ -185,4 +157,4 @@ const columns = [
   );
 }
 
-export default UsersTable;
+export default StoreTable;

@@ -22,4 +22,5 @@ body {
     height: 100vh;
     text-rendering: optimizeSpeed;
     background-color: var(--primary-color);
+    overflow-y: hidden;
 }

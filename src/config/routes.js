@@ -8,6 +8,7 @@ const routes = {
     addStock: '/stockIn/add',
     stockIn: '/stockIn',
     stockOut: '/stockOut',
+    outStock: '/stockOut/out',
     statistics: '/statistics',
     users: '/users',
     addUser: '/users/add'

@@ -1,17 +1,22 @@
 .wrapper {
     position: fixed;
+    z-index: 101;
     height: 100%;
     width: 250px;
     overflow-y: scroll;
-    background-color: rgb(48, 154, 170);
+    overflow-x: hidden;
+    //background-color: #189eff;
+    background: linear-gradient(rgb(0, 91, 234), 40%, #189eff);
 }
 .footer-sidebar {
     button {
-        border-radius: 97px;
-        width: 100px;
-        margin-top: 60px;
+        width: 80px;
+        height: 35px;
+        font-size: 1.2rem;
+        margin-top: 80px;
         margin-left: 50px;
         color: white;
-        background-color: rgb(48, 154, 170);
+        border-color: white;
+        background-color: transparent;
     }
 }

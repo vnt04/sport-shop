@@ -10,48 +10,65 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 const columns = [
-  { id: 'stt', label: 'STT', minWidth: 0,align: 'center', format: (value) => value.toLocaleString('en-US') },
-  { id: 'name', label: 'Tên sản phẩm',align: 'center', minWidth: 100 },
   {
-    id: 'source',
-    label: 'Nhà cung cấp',
+    id: 'stt',
+    label: 'STT',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id:'soLuong',
-    label: 'Số lượng',
+    id: 'tenSP',
+    label: 'Tên sản phẩm',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
     id: 'day',
-    label: 'Ngày nhập',
-    minWidth: 100,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'creator',
-    label: 'Tạo bởi',
-    minWidth: 50,
-    align: 'center',
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id:'money',
-    label: 'Thành tiền',
+    label: 'Ngày mua hàng',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
-  { id: 'state', label: 'Trạng thái', minWidth: 100 },
-  { id: 'act', label: 'Hành động', minWidth: 10, align: 'center' },
+  {
+    id: 'tenKH',
+    label: 'Tên khách hàng',
+    minWidth: 0,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'contact',
+    label: 'TT liên hệ',
+    minWidth: 0,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'tongTien',
+    label: 'Tổng tiền',
+    minWidth: 0,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'state',
+    label: 'Trạng thái',
+    minWidth: 0,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'act',
+    label: 'Hành động',
+    minWidth: 0,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
 ];
 
- function Data() {
+ function OrdersTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [data, setData] = useState([]);
@@ -139,4 +156,4 @@ const columns = [
   );
 }
 
-export default Data;
+export default OrdersTable;

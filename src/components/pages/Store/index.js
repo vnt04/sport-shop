@@ -1,8 +1,9 @@
 import classNames from "classnames/bind";
 import styles from './Store.module.scss';
 import Select from 'react-select';
+import StoreTable from "./StoreTable";
 import { useState } from 'react';
-import Category from "./Category";
+
 
 const cx = classNames.bind(styles);
 
@@ -49,18 +50,14 @@ function Store() {
                     />
                     </div>
 
+                    
                 </div>
 
-                <div className={cx('danh-muc-sp')}>
-                     <Category/>
-                </div>
             </div>
-            
 
-            <div className={cx('san-pham')}>
-
-
-            </div>
+            <div className={cx('ds-san-pham')}>
+                <StoreTable/>
+            </div>                  
         </div>
 
     );

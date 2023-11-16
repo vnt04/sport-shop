@@ -18,64 +18,50 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'tenNv',
-    label: 'Tên nhân viên',
+    id: 'tenSP',
+    label: 'Tên sản phẩm',
+    minWidth: 0,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'tenNcc',
+    label: 'Nhà cung cấp',
+    minWidth: 0,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id:'soLuong',
+    label: 'Số lượng',
+    minWidth: 0,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'dayOut',
+    label: 'Ngày xuất',
     minWidth: 100,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'chucVu',
-    label: 'Chức vụ',
+    id: 'creator',
+    label: 'Tạo bởi',
+    minWidth: 50,
+    align: 'center',
+    format: (value) => value.toFixed(2),
+  },
+  {
+    id:'money',
+    label: 'Thành tiền',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'day',
-    label: 'Ngày sinh',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'sex',
-    label: 'Giới tính',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'luongThang',
-    label: 'Lương',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'maThue',
-    label: 'Mã số thuế',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'sdt',
-    label: 'Số điện thoại',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'mail',
-    label: 'Email',
-    minWidth: 0,
-    align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'address',
-    label: 'Địa chỉ',
+    id: 'state',
+    label: 'Trạng thái',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
@@ -89,13 +75,13 @@ const columns = [
   },
 ];
 
- function UsersTable() {
+ function StockInTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3005/user/read')
+    axios.get('http://localhost:3005/receipt')
       .then(function (response) {
         setData(response.data);
       })
@@ -126,7 +112,7 @@ const columns = [
                                     style={{
                                         minWidth: column.minWidth,
                                         fontWeight: 'bold',
-                                        fontSize: '1.3rem',
+                                        fontSize: '1.8rem',
                                     }}
                                 >
                                     {column.label}
@@ -135,8 +121,7 @@ const columns = [
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => {
-                          const counter = page * rowsPerPage + index + 1;
+                        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                             return (
                                 <TableRow
                                     hover
@@ -146,22 +131,15 @@ const columns = [
                                     key={row.code}
                                 >
                                     {columns.map((column) => {
-                                        let value = row[column.id];
-                                        if (column.id === 'stt') {
-                                          value = counter;
-                                        } else if (column.id === 'act') {
-                                          value = '...';
-                                        } else {
-                                          value = row[column.id];
-                                        }
+                                        const value = row[column.id];
                                         return (
                                             <TableCell
                                                 key={column.id}
                                                 align={column.align}
-                                                style={{ fontSize: '1.26rem' }}
+                                                style={{ fontSize: '1.8rem' }}
                                             >
                                                 {column.format && typeof value === 'number'
-                                        ? column.format(value)
+                                                    ? column.format(value)
                                                     : value}
                                             </TableCell>
                                         );
@@ -185,4 +163,4 @@ const columns = [
   );
 }
 
-export default UsersTable;
+export default StockInTable;

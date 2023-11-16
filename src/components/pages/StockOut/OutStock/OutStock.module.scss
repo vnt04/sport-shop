@@ -1,14 +1,14 @@
 //css Receipt ( tạo mới đơn nhập kho)
-.phieu-nhap-ncc {
+.phieu-xuat {
     height: 100vh;
     width: 100%;
 }
-.dieu-huong-phieu-nhap {
+.dieu-huong-phieu-xuat {
     display: flex;
     align-items: center;
     height: 8%;
 }
-.ten-phieu-nhap {
+.ten-phieu-xuat {
     font-size: 2.2rem;
     margin-top: 15px;
     font-weight: 500;
@@ -22,12 +22,12 @@
     cursor: pointer;
 }
 
-.chi-tiet-phieu-nhap {
+.chi-tiet-phieu-xuat {
     height: 500px;
-    width: 50%;
+    width: 90%;
     margin-top: 30px;
     background-color: white;
-    margin-left: 20%;
+    margin-left: 60px;
     border: 1px solid black;
 }
 .custom-input {

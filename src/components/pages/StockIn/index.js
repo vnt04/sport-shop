@@ -3,7 +3,7 @@ import styles from './StockIn.module.scss';
 import classNames from 'classnames/bind';
 import Time from '../Home/Time';
 import routes from '../../../config/routes';
-import Data from './Data';
+import StockInTable from './StockInTable';
 const cx = classNames.bind(styles);
 
 function StockIn() {
@@ -33,7 +33,7 @@ function StockIn() {
 
                 {/* Table */}
                 <div style={{padding: '20px'}}>
-                    <Data />
+                    <StockInTable />
                 </div>
             </div>
         </div>

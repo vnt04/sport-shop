@@ -3,9 +3,10 @@
     width: 100%;
 }
 .header-store {
-    height: 400px;
+    height: 130px;
     width: 82%;
-    position: fixed;
+    margin-top: 20px;
+    //position: fixed;
 }
 .loc-san-pham {
     height: 60px;
@@ -23,15 +24,8 @@
     width: 600px;
     margin-left: 50px;
 }
-.danh-muc-sp {
-    height: 100px;
-    margin: 20px;
-    margin-top: 0px;
-}
-
-.san-pham {
-    height: 100%;
-    width: 82%;
-    border: 0.5px solid black;
-    background-color: black;
+.ds-san-pham {
+    width: 99%;
+    height: 50px;
+    margin-left: 20px;
 }

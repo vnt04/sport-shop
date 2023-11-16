@@ -9,6 +9,7 @@ import Products from '../components/pages/Products'
 import Store from '../components/pages/Store'
 import StockIn from '../components/pages/StockIn'
 import StockOut from '../components/pages/StockOut'
+import OutStock from '../components/pages/StockOut/OutStock'
 import Statistics from '~/components/pages/Statistics';
 import Users from '~/components/pages/Users';
 import AddUser from '~/components/pages/Users/AddUser';
@@ -25,6 +26,7 @@ const publicRoutes = [
     { path: config.routes.store, component: Store },
     { path: config.routes.stockIn, component: StockIn },
     { path: config.routes.stockOut, component: StockOut, layout: null },
+    { path: config.routes.outStock, component: OutStock, layout: null },
     { path: config.routes.statistics, component: Statistics, layout: null },
     { path: config.routes.users, component: Users, layout: null },
     { path: config.routes.addUser, component: AddUser, layout: null },

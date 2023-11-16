@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 function Receipt() {
     const [validated, setValidated] = useState(false);
     const [currentDate, setCurrentDate] = useState('');
+    const [selectedUser, setSelectedUser] = useState(null);
 
     const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -32,7 +33,6 @@ function Receipt() {
 
 
     // Gọi api & database
-    //users
     const [dataUsers, setDataUsers] = useState([]);
     useEffect(() => {
     axios.get('http://localhost:3005/user/read')
@@ -48,108 +48,10 @@ function Receipt() {
         console.log(error);
       })
   }, []);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const handleUserChange = (selectedOption) => {
+
+
+  const handleUserChange = (selectedOption) => {
     setSelectedUser(selectedOption);
-    };
-
-    //Nhà cung cấp
-    const [dataNcc, setDataNcc] = useState([]);
-    useEffect(() => {
-    axios.get('http://localhost:3005/supplier/read')
-      .then(function (response) {
-         const names = response.data.map(ncc => ({
-          label: ncc.tenNcc,
-          value: ncc.tenNcc
-        }));
-        setDataNcc(names);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }, []);
-
-  const [selectedNcc, setSelectedNcc] = useState(null);
-  const handleNccChange = (selectedOption) => {
-    setSelectedNcc(selectedOption);
-  };
-  
-
-  //Loại sản phẩm
-  const [dataLoaiSP, setDataLoaiSP] = useState([]);
-  const [dataTenSP, setDataTenSP] = useState([]);
-    useEffect(() => {
-    axios.get('http://localhost:3005/category/read')
-      .then(function (response) {
-         const names = response.data.map(cate => ({
-          label: cate.tenLoai,
-          value: cate.tenLoai
-        }));
-        setDataLoaiSP(names);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }, []);  
-
-  const [selectedLoaiSP, setSelectedLoaiSP] = useState(null);
-  const handleLoaiSPChange = (selectedOption) => {
-    setSelectedLoaiSP(selectedOption);
-  };
-
-  //Tên sản phẩm
-useEffect(() => {
-  if (selectedLoaiSP) {
-    axios.get('http://localhost:3005/category/read')
-      .then(function (response) {
-        const foundCategory = response.data.find(category => category.tenLoai === selectedLoaiSP.value);
-        if (foundCategory) {
-          const maLoai = foundCategory.maLoai;
-
-          axios.get('http://localhost:3005/product/read')
-            .then(function (response) {
-              const filterProduct = response.data.filter(prod => prod.maLoai === maLoai);
-              const names = filterProduct.map(product => ({
-                label: product.tenSP,
-                value: product.tenSP
-              }));
-              setDataTenSP(names);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-}, [selectedLoaiSP]);
-
-  const [selectedTenSP, setSelectedTenSP] = useState(null);
-  const handleTenSPChange = (selectedOption) => {
-    setSelectedTenSP(selectedOption);
-  };
-
-  // Đơn vị tính
-  const [dataDVT, setDataDVT] = useState([]);
-    useEffect(() => {
-    axios.get('http://localhost:3005/unit/read')
-      .then(function (response) {
-         const names = response.data.map(cate => ({
-          label: cate.tenDVT,
-          value: cate.tenDVT
-        }));
-        setDataDVT(names);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }, []);
-
-  const [selectedDVT, setSelectedDVT] = useState(null);
-  const handleDVTChange = (selectedOption) => {
-    setSelectedDVT(selectedOption);
   };
   return (
     <Form  noValidate validated={validated} onSubmit={handleSubmit}>
@@ -166,17 +68,17 @@ useEffect(() => {
           />
         </Form.Group>
         <Form.Group as={Col} md="4" controlId="validationCustom01">
-          <Form.Label className='h2'>Mã phiếu nhập</Form.Label>
+          <Form.Label className='h2'>Mã phiếu xuất</Form.Label>
           <Form.Control
             required
             type="text"
-            placeholder="Mã phiếu nhập"
+            placeholder="Mã phiếu xuất"
             className="form-control-lg"
             style={{fontSize:'18px',marginTop: '5px'}}
           />
         </Form.Group>
         <Form.Group as={Col} md="4" controlId="validationCustom02">
-          <Form.Label className='h2'>Ngày nhập </Form.Label>
+          <Form.Label className='h2'>Ngày xuất </Form.Label>
           <Form.Control
             required
             type="text"
@@ -195,9 +97,9 @@ useEffect(() => {
           <Form.Label className='h2'>Nhà cung cấp</Form.Label>
           <Select
             required
-            value={selectedNcc}
-            onChange={handleNccChange}
-            options={dataNcc}
+            value={selectedUser}
+            onChange={handleUserChange}
+            //options={dataNcc}
             isSearchable
             placeholder="Chọn nhà cung cấp"
             className="form-control-lg"
@@ -207,9 +109,9 @@ useEffect(() => {
           <Form.Label className='h2'>Loại sản phẩm</Form.Label>
           <Select
             required
-            value={selectedLoaiSP}
-            onChange={handleLoaiSPChange}
-            options={dataLoaiSP}
+            value={selectedUser}
+            onChange={handleUserChange}
+            //options={dataLoaiSP}
             isSearchable
             placeholder="Chọn loại sản phẩm"
             className="form-control-lg"
@@ -219,9 +121,9 @@ useEffect(() => {
           <Form.Label className='h2'>Tên sản phẩm</Form.Label>
           <Select
             required
-            value={selectedTenSP}
-            onChange={handleTenSPChange}
-            options={dataTenSP}
+            value={selectedUser}
+            onChange={handleUserChange}
+            //options={dataTenSP}
             isSearchable
             placeholder="Chọn tên sản phẩm"
             className="form-control-lg"
@@ -249,29 +151,16 @@ useEffect(() => {
           />
         </Form.Group>
 
-        <Form.Group as={Col} md="3" controlId="validationCustomUsername">
-          <Form.Label className='h2'>Đơn vị tính</Form.Label>
-          <Select
-            required
-            value={selectedDVT}
-            onChange={handleDVTChange}
-            options={dataDVT}
-            isSearchable
-            placeholder="Chọn đơn vị tính"
-            className="form-control-lg"
-          />
-        </Form.Group>
-
-        <Form.Group as={Col} md="3" controlId="validationCustomUsername">
-          <Form.Label className='h2'>Chiết khấu(%) </Form.Label>
+        <Form.Group as={Col} md="6" controlId="validationCustom01">
+          <Form.Label className='h2'>Lí do</Form.Label>
           <Form.Control
             required
-            type="number"
+            type="text"
+            placeholder="Lí do xuất kho"
             className="form-control-lg"
             style={{fontSize:'18px',marginTop: '5px'}}
           />
         </Form.Group>
-
         
 
     </Row>

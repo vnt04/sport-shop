@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import Select from 'react-select';
 import { useState } from 'react';
-
+import Button from 'react-bootstrap/Button';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
 import { Link } from 'react-router-dom';
@@ -45,7 +45,7 @@ function Header() {
                 </div>
 
                 <div className={cx('action')}>
-                    <button onClick={handleSignIn}>Sign in</button>
+                    <Button onClick={handleSignIn} variant="outline-light">Đăng nhập</Button>
                     <UserIcon />
                 </div>
             </div>

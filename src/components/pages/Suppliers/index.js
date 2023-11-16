@@ -1,7 +1,8 @@
+import axios from "axios";
 import classNames from "classnames/bind";
 import styles from './Suppliers.module.scss'
 import Select from 'react-select';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SuppliersTable from './SuppliersTable';
 import routes from "~/config/routes";
@@ -9,14 +10,26 @@ import routes from "~/config/routes";
 const cx = classNames.bind(styles);
 
 function Suppliers() {
-    const [selectedType, setSelectedUser] = useState(null);
-    const handleTypeChange = (selectedOption) => {
-        setSelectedUser(selectedOption);
+    const [selectedNCC, setSelectedNCC] = useState(null);
+    const [data, setData] = useState([]);
+    const handleNCCChange = (selectedOption) => {
+        setSelectedNCC(selectedOption);
     };
-    const Types = [
-       {label: 'Dụng cụ tập gym', value: 'gym'},
-       {label: 'Đồ thể thao', value: 'clothes'}
-    ];
+
+    useEffect(() => {
+        axios.get('http://localhost:3005/supplier/read')
+        .then(function (response) {
+            const formattedData = response.data.map(ncc => ({
+                label: ncc.tenNcc, // Đổi 'tenNcc' thành key chứa tên nhà cung cấp trong đối tượng nhà cung cấp từ API của bạn
+                value: ncc._id // Đổi '_id' thành key chứa ID nhà cung cấp trong đối tượng nhà cung cấp từ API của bạn
+            }));
+            setData(formattedData);
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+    }, []);
+    
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -29,13 +42,16 @@ function Suppliers() {
 
                 <div className={cx('search')}>
                     <Select
-                        value={selectedType}
-                        onChange={handleTypeChange}
-                        options={Types}
+                        value={selectedNCC}
+                        onChange={handleNCCChange}
+                        options={data}
                         isSearchable
                         placeholder="Chọn nhà cung cấp cần tìm"
                         className="form-control-lg"
-                    />
+                        filterOption={(option, inputValue) =>
+                            option.label.toLowerCase().includes(inputValue.toLowerCase())
+    }
+/>
                 </div>
 
                 <button onClick={handleClick}>Tạo mới</button>
@@ -43,6 +59,7 @@ function Suppliers() {
 
             <div className={cx('danh-sach-ncc')}>
                 <SuppliersTable/>
+                
             </div>
             
         </div>
