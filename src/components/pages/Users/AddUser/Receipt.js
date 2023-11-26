@@ -8,7 +8,8 @@ import Row from 'react-bootstrap/Row';
 import DatePicker from 'react-datepicker'; 
 import 'react-datepicker/dist/react-datepicker.css';
 import routes from '~/config/routes';
-import SuccessModal from '../../Suppliers/AddSupplier/SuccessModal';
+import Notify from '~/components/Notify';
+
 
 function Receipt() {
     const [selectedDate, setSelectedDate] = useState(null);
@@ -26,17 +27,17 @@ function Receipt() {
           formObject[key] = value;
         });
         const luongCoBan = parseFloat(formObject['luongCoBan']);
-const hsLuong = parseFloat(formObject['hsLuong']);
-const phuCap = parseFloat(formObject['phuCap']);
+        const hsLuong = parseFloat(formObject['hsLuong']);
+        const phuCap = parseFloat(formObject['phuCap']);
 
-// Kiểm tra xem các biến đã được chuyển đổi thành số chưa
-if (!isNaN(luongCoBan) && !isNaN(hsLuong) && !isNaN(phuCap)) {
-  // Tính toán giá trị luongThang và gán vào formObject
-  formObject['luongThang'] = luongCoBan * hsLuong + phuCap;
-} else {
-  // Xử lý khi có lỗi xảy ra trong việc chuyển đổi từ chuỗi sang số
-  console.log('Có lỗi xảy ra trong việc đọc dữ liệu từ form.');
-}
+        // Kiểm tra xem các biến đã được chuyển đổi thành số chưa
+        if (!isNaN(luongCoBan) && !isNaN(hsLuong) && !isNaN(phuCap)) {
+          // Tính toán giá trị luongThang và gán vào formObject
+          formObject['luongThang'] = luongCoBan * hsLuong + phuCap;
+        } else {
+          // Xử lý khi có lỗi xảy ra trong việc chuyển đổi từ chuỗi sang số
+          console.log('Có lỗi xảy ra trong việc đọc dữ liệu từ form.');
+        }
         
         try {
           const response = await axios.post('http://localhost:3005/user/add', formObject);
@@ -113,7 +114,7 @@ if (!isNaN(luongCoBan) && !isNaN(hsLuong) && !isNaN(phuCap)) {
         </Form.Group>
 
         <Form.Group as={Col} md="3" controlId="validationCustom04">
-          <Form.Label className='h2' style={{marginBottom:'14px'}}>Ngày sinh</Form.Label>
+          <Form.Label className='h2' style={{marginLeft: '10px', marginBottom:'14px'}}>Ngày sinh</Form.Label>
           <DatePicker
             selected={selectedDate}
             name = "day"
@@ -227,7 +228,7 @@ if (!isNaN(luongCoBan) && !isNaN(hsLuong) && !isNaN(phuCap)) {
                 }
               type="submit">Thêm mới</Button>
       </Row>
-      <SuccessModal show={showNotify} handleClose={handleCloseNotify}/>
+      <Notify show={showNotify} handleClose={handleCloseNotify}/>
     </Form>
   );
 }

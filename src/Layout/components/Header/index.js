@@ -1,35 +1,39 @@
 import classNames from 'classnames/bind';
 import Select from 'react-select';
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import { useEffect, useState } from 'react';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
 import { Link } from 'react-router-dom';
 import { UserIcon } from '~/assets/Icons';
-import LoginForm from './LoginForm';
 
 const cx = classNames.bind(styles);
 
 function Header() {
     const [selectedUser, setSelectedUser] = useState(null);
-    const [showLoginForm, setShowLoginForm] = useState(false);
+    const [loggedInUsername, setLoggedInUsername] = useState('')
+    useEffect(() =>{
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        if (loggedInUser) {
+        const user = JSON.parse(loggedInUser);
+        // Lấy tên người dùng từ thông tin đã lưu
+        setLoggedInUsername(user.email); // Hiển thị email, bạn có thể thay thế bằng tên người dùng hoặc thông tin khác nếu cần
+        }
+    },[])
 
     const users = [
         // ... (user data)
     ];
 
+
     const handleUserChange = (selectedOption) => {
         setSelectedUser(selectedOption);
     };
 
-    const handleSignIn = () => {
-        setShowLoginForm(!showLoginForm);
-    };
 
     return (
         <header className={cx('wrapper')}>
             <div className={cx('content')}>
-                <Link to="/" className={cx('logo')}>
+                <Link to="/home" className={cx('logo')}>
                     <img src={images.logo} alt="logo" />
                 </Link>
 
@@ -43,14 +47,14 @@ function Header() {
                         className="form-control-lg"
                     />
                 </div>
-
+                <div className={cx('user-name')}>
+                    {loggedInUsername}
+                </div>
                 <div className={cx('action')}>
-                    <Button onClick={handleSignIn} variant="outline-light">Đăng nhập</Button>
                     <UserIcon />
                 </div>
             </div>
 
-             {showLoginForm && <div><LoginForm /></div>} 
         </header>
     );
 }

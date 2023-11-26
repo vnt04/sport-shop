@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-function SuccessModal({ show, handleClose }) {
+function Notify({ massage,show, handleClose }) {
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal massage show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Thông báo</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Đã thêm mới thành công!
+        {massage}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
@@ -20,4 +20,4 @@ function SuccessModal({ show, handleClose }) {
   );
 }
 
-export default SuccessModal;
+export default Notify;

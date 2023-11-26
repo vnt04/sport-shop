@@ -5,21 +5,36 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Select from 'react-select';
 import Row from 'react-bootstrap/Row';
+import Notify from '~/components/Notify';
+import routes from '~/config/routes'
 
-function Receipt() {
-    const [validated, setValidated] = useState(false);
-    const [currentDate, setCurrentDate] = useState('');
-
-    const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
+function Receipt() {    
+    const [showNotify, setNotify] = useState(false); 
+    const handleSubmit = async (event) => {
       event.preventDefault();
-      event.stopPropagation();
-    }
-
-    setValidated(true);
+      const formData = new FormData(event.target);
+      const formObject = {};
+      formData.forEach((value,key) => {
+        formObject[key] = value;
+      });
+      formObject['ngayNhap'] = currentDate;
+      formObject['state'] = 'Chờ duyệt'
+      try{
+        
+        const response = await axios.post('http://localhost:3005/stockIn/add',formObject)
+        console.log('Response from server: ',response.data);
+      }
+      catch(error){
+        console.log('Error sending data: ', error);
+      }
+      setNotify(true);
+    };
+    const handleCloseNotify = () => {
+      setNotify(false);
+      window.location.href = routes.stockIn;
     };
     // Lấy và hiển thị ngày hiện tại
+    const [currentDate, setCurrentDate] = useState('');
     useEffect(() => {
     const today = new Date();
     const year = today.getFullYear();
@@ -152,11 +167,12 @@ useEffect(() => {
     setSelectedDVT(selectedOption);
   };
   return (
-    <Form  noValidate validated={validated} onSubmit={handleSubmit}>
+    <Form  onSubmit={handleSubmit}>
      <Row style={{ marginLeft: '20px', marginRight: '20px',marginTop: '20px' }} >
       <Form.Group as={Col} md="4" controlId="validationCustomUsername">
           <Form.Label className='h2'>Người nhập</Form.Label>
           <Select
+            name = "user"
             value={selectedUser}
             onChange={handleUserChange}
             options={dataUsers}
@@ -169,6 +185,7 @@ useEffect(() => {
           <Form.Label className='h2'>Mã phiếu nhập</Form.Label>
           <Form.Control
             required
+            name = "maPhieu"
             type="text"
             placeholder="Mã phiếu nhập"
             className="form-control-lg"
@@ -179,6 +196,7 @@ useEffect(() => {
           <Form.Label className='h2'>Ngày nhập </Form.Label>
           <Form.Control
             required
+            name = "ngayNhap"
             type="text"
             className="form-control-lg"
             value={currentDate}
@@ -195,6 +213,7 @@ useEffect(() => {
           <Form.Label className='h2'>Nhà cung cấp</Form.Label>
           <Select
             required
+            name = "tenNcc"
             value={selectedNcc}
             onChange={handleNccChange}
             options={dataNcc}
@@ -207,6 +226,7 @@ useEffect(() => {
           <Form.Label className='h2'>Loại sản phẩm</Form.Label>
           <Select
             required
+            name = "loaiSP"
             value={selectedLoaiSP}
             onChange={handleLoaiSPChange}
             options={dataLoaiSP}
@@ -219,6 +239,7 @@ useEffect(() => {
           <Form.Label className='h2'>Tên sản phẩm</Form.Label>
           <Select
             required
+            name = "tenSP"
             value={selectedTenSP}
             onChange={handleTenSPChange}
             options={dataTenSP}
@@ -229,10 +250,11 @@ useEffect(() => {
         </Form.Group>
 
     <Row style={{ marginLeft: '20px', marginRight: '20px',marginTop: '45px' }} >
-        <Form.Group as={Col} md="3" controlId="validationCustomUsername">
+        <Form.Group as={Col} md="3" controlId="gia">
           <Form.Label className='h2'>Giá tiền(VNĐ) </Form.Label>
           <Form.Control
             required
+            name = "giaNhap"
             type="number"
             className="form-control-lg"
             style={{fontSize:'18px',marginTop: '5px'}}
@@ -243,6 +265,7 @@ useEffect(() => {
           <Form.Label className='h2'>Số lượng </Form.Label>
           <Form.Control
             required
+            name = "soLuong"
             type="number"
             className="form-control-lg"
             style={{fontSize:'18px',marginTop: '5px'}}
@@ -253,6 +276,7 @@ useEffect(() => {
           <Form.Label className='h2'>Đơn vị tính</Form.Label>
           <Select
             required
+            name = "dvt"
             value={selectedDVT}
             onChange={handleDVTChange}
             options={dataDVT}
@@ -267,12 +291,11 @@ useEffect(() => {
           <Form.Control
             required
             type="number"
+            name = "chietKhau"
             className="form-control-lg"
             style={{fontSize:'18px',marginTop: '5px'}}
           />
         </Form.Group>
-
-        
 
     </Row>
 
@@ -288,6 +311,7 @@ useEffect(() => {
         }
        type="submit">Thêm mới</Button>
       </Row>
+      <Notify show={showNotify} handleClose={handleCloseNotify}/>
     </Form>
   );
 }

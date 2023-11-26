@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 const columns = [
   {
@@ -18,7 +19,7 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'name',
+    id: 'tenSP',
     label: 'Tên sản phẩm',
     minWidth: 0,
     align: 'center',
@@ -32,14 +33,21 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'soLuongKho',
+    id: 'tenDVT',
+    label: 'Đơn vị tính',
+    minWidth: 0,
+    align: 'center',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'slKho',
     label: 'Số lượng tồn kho',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'loaiSP',
+    id: 'tenLoai',
     label: 'Loại sản phẩm',
     minWidth: 0,
     align: 'center',
@@ -67,14 +75,36 @@ const columns = [
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3005/receipt')
-      .then(function (response) {
-        setData(response.data);
+  let unit_map = {};
+  let cate_map = {};
+  axios.get('http://localhost:3005/unit/read')
+    .then(function (unitResponse) {
+      unitResponse.data.forEach(unit => {
+        unit_map[unit.maDVT] = unit.tenDVT;
+      });
+    })
+    axios.get('http://localhost:3005/category/read')
+    .then(function(cateResponse){
+      cateResponse.data.forEach(cate =>{
+        cate_map[cate.maLoai] = cate.tenLoai;
       })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }, []);
+    })
+    axios.get('http://localhost:3005/product/read')
+    .then(function (productResponse) {
+      const products = productResponse.data.map(prod => ({
+        ...prod,
+        tenDVT: unit_map[prod.maDVT] || prod.tenDVT,
+        tenLoai: cate_map[prod.maLoai] || prod.tenLoai,
+      }));
+
+      setData(products); 
+    })
+    .catch(function (error) {
+      console.error('Lỗi khi lấy dữ liệu:', error);
+    });
+    
+}, []);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -98,7 +128,7 @@ const columns = [
                                     style={{
                                         minWidth: column.minWidth,
                                         fontWeight: 'bold',
-                                        fontSize: '1.8rem',
+                                        fontSize: '1.4rem',
                                     }}
                                 >
                                     {column.label}
@@ -107,22 +137,40 @@ const columns = [
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => {
+                          const counter = page * rowsPerPage + index + 1;
                             return (
                                 <TableRow
                                     hover
                                     role="checkbox"
                                     style={{ cursor: 'pointer' }}
                                     tabIndex={-1}
-                                    key={row.code}
+                                    key={index}
                                 >
                                     {columns.map((column) => {
-                                        const value = row[column.id];
+                                        let value = row[column.id];
+                                        if (column.id === 'stt') {
+                                          value = counter;
+                                        } else if (column.id === 'act') {
+                                          value = 
+                                            <Dropdown>
+                                                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                                  ...
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                  <Dropdown.Item style={{color: 'green', fontSize:'1.2rem'}} href="#/action-1">Duyệt bán</Dropdown.Item>
+                                                  <Dropdown.Item style={{color: 'red', fontSize:'1.2rem'}} href="#/action-1">Chỉnh sửa</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                              </Dropdown>}
+                                        else {
+                                          value = row[column.id];
+                                        }
                                         return (
                                             <TableCell
-                                                key={column.id}
+                                                key={`${column.id}-${index}`}
                                                 align={column.align}
-                                                style={{ fontSize: '1.8rem' }}
+                                                style={{ fontSize: '1.4rem' }}
                                             >
                                                 {column.format && typeof value === 'number'
                                                     ? column.format(value)

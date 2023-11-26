@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import SuccessModal from './SuccessModal';
+import Notify from '~/components/Notify';
 import routes from '~/config/routes';
 
 function Receipt() {
@@ -130,7 +130,7 @@ function Receipt() {
                 }
               type="submit">Thêm mới</Button>
       </Row>
-     <SuccessModal show={showNotify} handleClose={handleCloseNotify}/>
+     <Notify show={showNotify} handleClose={handleCloseNotify}/>
     </Form>
     
     

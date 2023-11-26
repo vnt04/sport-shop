@@ -8,6 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import Dropdown from 'react-bootstrap/Dropdown';
+
 
 const columns = [
   {
@@ -150,15 +152,25 @@ const columns = [
                                         if (column.id === 'stt') {
                                           value = counter;
                                         } else if (column.id === 'act') {
-                                          value = '...';
-                                        } else {
+                                          value = (<Dropdown>
+                                                      <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                                          ...           
+                                                        </Dropdown.Toggle>                         
+
+                                                        <Dropdown.Menu>
+                                                            <Dropdown.Item style={{color: 'red', fontSize:'1.2rem'}} href="#/action-1">Xóa</Dropdown.Item>
+                                                            <Dropdown.Item style={{color: 'red', fontSize:'1.2rem'}} href="#/action-2">Sửa</Dropdown.Item>
+                                                        </Dropdown.Menu>            
+                                                    </Dropdown>)
+                                        }
+                                         else {
                                           value = row[column.id];
                                         }
                                         return (
                                             <TableCell
                                                 key={column.id}
                                                 align={column.align}
-                                                style={{ fontSize: '1.26rem' }}
+                                                style={{ fontSize: '1.28rem' }}
                                             >
                                                 {column.format && typeof value === 'number'
                                         ? column.format(value)

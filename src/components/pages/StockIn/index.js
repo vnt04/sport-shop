@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'; // Import useHistory từ React Router
+import { useNavigate } from 'react-router-dom';
 import styles from './StockIn.module.scss';
 import classNames from 'classnames/bind';
 import Time from '../Home/Time';

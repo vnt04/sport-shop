@@ -4,10 +4,18 @@ import Menu, { MenuItem } from './Menu';
 import Button from 'react-bootstrap/Button';
 import { HomeIcon, CategoryIcon, OrdersIcon, StoreIcon, ImpWarehouseIcon, ExpWarehouseIcon, UsersIcon, BellIcon, ChartIcon } from '~/assets/Icons';
 import config from '~/config';
+import { useAuth } from '~/components/Login/AuthContext';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-    
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+    const handleClick = (event) => {
+        event.preventDefault();
+        logout();
+        navigate('/');
+    };
     return (
         <aside className={cx('wrapper')}>
             <Menu>
@@ -25,7 +33,7 @@ function Sidebar() {
                     <MenuItem title="Thống kê" to={config.routes.statistics} icon={<ChartIcon />} />
                     
                     <div className={cx('footer-sidebar')}>
-                        <Button variant="outline-danger">Đăng xuất</Button>{' '}
+                        <Button onClick={handleClick} variant="outline-danger">Đăng xuất</Button>{' '}
                     </div>
             </Menu>
         </aside>
