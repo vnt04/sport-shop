@@ -8,19 +8,25 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(()=>{
-    // Kiểm tra trong localStorage nếu đã có thông tin về đăng nhập
     return localStorage.getItem('isLoggedIn') === 'true';
-    }
-  );
-
+  });
   const [showNoExistAccount, setNoExistAccount] = useState(false);
   const [showWrongPassword, setWrongPassword] = useState(false);
+  const [showLoginSuccess, setShowLoginSuccess] = useState(false);
+  const [showLogout, setShowLogout] = useState(false);
+
   const handleCloseNotify = () => {
       if(showNoExistAccount) setNoExistAccount(false);
       if(showWrongPassword) setWrongPassword(false);
-      //window.location.href = '/';
+      if(showLoginSuccess) setShowLoginSuccess(false);
+      if(showLogout) setShowLogout(false);
     };
-
+  const handleOK = () =>{
+        setIsLoggedIn(false);
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('loggedInUser');
+        setShowLogout(false);
+  }
   const login =  (formLogin) => {
     // Xử lý xác thực ở đây
       axios.get('http://localhost:3005/login/read')
@@ -34,10 +40,18 @@ export const AuthProvider = ({ children }) => {
         }
         else {
           setIsLoggedIn(true);
-          setWrongPassword(false);
+          setShowLoginSuccess(true);
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('loggedInUser', JSON.stringify({ email: formLogin.email, password: formLogin.password }));
+          
+          
+          setTimeout(() => {
+          setShowLoginSuccess(false); 
+          setTimeout(() => {
+            handleCloseNotify();
+          }, 700);
           window.location.href = '/home';
+        }, 700);
         }
       })
       .catch(function(error){
@@ -46,22 +60,19 @@ export const AuthProvider = ({ children }) => {
     };
 
   const logout = () => {
-    // Xử lý đăng xuất ở đây
-    setIsLoggedIn(false);
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('loggedInUser');
+
+    setShowLogout(true);
+    //handleOK(),handleCloseNotify() xử lí đăng xuất
+
   };
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
       {children}
-      {showNoExistAccount && (
-        <Notify  massage={'Tài khoản không tồn tại!'} show={showNoExistAccount} handleClose={handleCloseNotify} />
-      )}
-
-      {showWrongPassword && (
-        <Notify  massage={'Mật khẩu không đúng!'} show={showWrongPassword} handleClose={handleCloseNotify} />
-      )}
+        <Notify color = {'#f44336'}  massage={'Tài khoản không tồn tại!'} show={showNoExistAccount} handleClose={handleCloseNotify} />
+        <Notify color = {'#f44336'} massage={'Mật khẩu không đúng!'} show={showWrongPassword} handleClose={handleCloseNotify} />
+        <Notify color = {'#4CAF50'} massage={'Đăng nhập thành công'} show={showLoginSuccess} handleClose={handleCloseNotify} />
+        <Notify color = {'#ffeb3b'} massage={'Bạn đang thực hiện đăng xuất'} show={showLogout} type='2' handleOK={handleOK} handleClose={handleCloseNotify} />
     </AuthContext.Provider>
   );
 };

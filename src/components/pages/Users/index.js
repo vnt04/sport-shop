@@ -1,22 +1,14 @@
 import classNames from "classnames/bind";
 import styles from './Users.module.scss'
-import Select from 'react-select';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UsersTable from './UsersTable';
 import routes from "~/config/routes";
+import Search from "~/components/Search";
+import  Button  from "react-bootstrap/Button";
 
 const cx = classNames.bind(styles);
 
 function Users() {
-    const [selectedType, setSelectedUser] = useState(null);
-    const handleTypeChange = (selectedOption) => {
-        setSelectedUser(selectedOption);
-    };
-    const Types = [
-       {label: 'Dụng cụ tập gym', value: 'gym'},
-       {label: 'Đồ thể thao', value: 'clothes'}
-    ];
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -28,17 +20,10 @@ function Users() {
                 <h1>Danh sách nhân viên</h1>
 
                 <div className={cx('search')}>
-                    <Select
-                        value={selectedType}
-                        onChange={handleTypeChange}
-                        options={Types}
-                        isSearchable
-                        placeholder="Chọn nhân viên cần tìm"
-                        className="form-control-lg"
-                    />
+                    <Search placeholder="Nhập tên nhân viên cần tìm"/>
                 </div>
 
-                <button onClick={handleClick}>Tạo mới</button>
+                <Button onClick={handleClick} variant="success">Tạo mới</Button>
             </div>
 
             <div className={cx('danh-sach-users')}>

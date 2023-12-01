@@ -15,9 +15,9 @@ function DefaultLayout({ children }) {
         <React.Fragment>
             {isLoggedIn ? (
                 <div className={cx('wrapper')}>
-                    <Sidebar />
+                    <Header />
                     <div className={cx('container')}>
-                        <Header />
+                        <Sidebar />
                         <div className={cx('content')}>{children}</div>
                     </div>
                 </div>

@@ -8,7 +8,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Notify from '~/components/Notify';
+import FormUpdate from '~/components/pages/Suppliers/FormUpdate';
 
 const columns = [
   {
@@ -71,10 +74,15 @@ const columns = [
 ];
 
 function SuppliersTable() {
+  //State
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [data, setData] = useState([]);
-
+  const [showDeleteWarning, setShowDeleteWarning] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deletedSupplierId, setDeletedSupplierId] = useState(null);
+  const [showFormUpdate, setShowFormUpdate]  = useState(false);
+  const [formData, setFormData] = useState(false);
   useEffect(() => {
     axios.get('http://localhost:3005/supplier/read')
       .then(function (response) {
@@ -93,8 +101,65 @@ function SuppliersTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  
+
+  const handleCloseNotify = () =>{
+    setDeleteConfirm(false);
+    setShowDeleteWarning(false);
+    setDeletedSupplierId(null);
+  }
+  //Delete
+  const handleOK = () =>{
+    const id = deletedSupplierId;
+    if(deleteConfirm && id)  {
+      axios.delete(`http://localhost:3005/supplier/delete/${id}`)
+      .then(function (response) {
+        setData(data.filter(item => item._id !== id));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+           
+    }
+    setDeleteConfirm(false);
+    setShowDeleteWarning(false);
+    setDeletedSupplierId(null);
+  }
+  const handleDelete = (id) => {
+    setShowDeleteWarning(true); 
+    setDeleteConfirm(true);
+    setDeletedSupplierId(id);  
+  }
+  //Update
+
+  const handleUpdate = (id) => {
+    setShowFormUpdate(true);
+    axios.get('http://localhost:3005/supplier/read')
+      .then(function (response) {
+        response.data.forEach(element => {
+          if(element._id === id){
+              const newData = {
+              tenNcc: element.tenNcc,
+              manager: element.manager,
+              maThue: element.maThue,
+              sdt: element.sdt,
+              mail: element.mail,
+              address: element.address
+          };
+          setFormData(newData);
+        }   
+        });
+      })
+    }
+  const handleCloseFormUpdate = () =>{
+    setShowFormUpdate(false);
+  }
+  const saveChange = () =>{
+    
+  }
   return (
+    <>
+    <FormUpdate show={showFormUpdate} handleClose={handleCloseFormUpdate} formData={formData} save={saveChange}/>
+    <Notify massage="Bạn muốn xóa nhà cung cấp! " color='#f44336' show={showDeleteWarning} handleClose={handleCloseNotify} handleOK={handleOK} type='2'/>
     <Paper sx={{ width: '100%', overflow: 'scroll' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
@@ -137,9 +202,13 @@ function SuppliersTable() {
                                     </Dropdown.Toggle>                         
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item style={{color: 'red', fontSize:'1.2rem'}} href="#/action-1">Xóa</Dropdown.Item>
-                                        <Dropdown.Item style={{color: 'red', fontSize:'1.2rem'}} href="#/action-2">Sửa</Dropdown.Item>
-                                    </Dropdown.Menu>            
+                                      <Dropdown.Item onClick={() => handleDelete(row['_id']) } style={{ fontSize: '1.2rem', color: 'red' }}>
+                                        <AiOutlineDelete style={{ marginRight: '5px' }} /> Xóa
+                                      </Dropdown.Item>
+                                      <Dropdown.Item onClick={()=>handleUpdate(row['_id'])} style={{ fontSize: '1.2rem', color: 'orange' }}>
+                                        <AiOutlineEdit style={{ marginRight: '5px' }} /> Chỉnh Sửa
+                                      </Dropdown.Item>
+                                    </Dropdown.Menu>        
                                 </Dropdown>)
                     } else {
                       value = row[column.id];
@@ -172,6 +241,7 @@ function SuppliersTable() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
+    </>
   );
 }
 

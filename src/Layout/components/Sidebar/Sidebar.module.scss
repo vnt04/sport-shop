@@ -1,22 +1,40 @@
 .wrapper {
     position: fixed;
-    z-index: 101;
+    z-index: 99;
     height: 100%;
-    width: 250px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    //background-color: #189eff;
-    background: linear-gradient(rgb(0, 91, 234), 40%, #189eff);
+    width: 16%;
+    background: #189eff;
 }
+
+.header-sidebar {
+    border-bottom: 1px solid rgb(62, 62, 62);
+}
+.header-sidebar-title {
+    color: #fdd835;
+    font-size: 2.7rem;
+    height: 45px;
+    font-weight: 700;
+    margin-top: 30px;
+    margin-left: 18px;
+}
+.sidebar-content {
+    height: 400px; /* Chiều cao của nội dung */
+    overflow-y: scroll; /* Cho phép cuộn dọc */
+    padding: 20px; /* Khoảng cách giữa nội dung và viền container */
+    background-color: black;
+}
+
 .footer-sidebar {
+    border-top: 1px solid rgb(62, 62, 62);
+    margin-top: 20px;
     button {
         width: 80px;
         height: 35px;
-        font-size: 1.2rem;
-        margin-top: 80px;
-        margin-left: 50px;
+        font-size: 1.4rem;
+        margin-left: 70px;
         color: white;
         border-color: white;
+        margin-top: 30px;
         background-color: transparent;
     }
 }

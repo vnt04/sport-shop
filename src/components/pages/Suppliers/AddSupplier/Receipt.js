@@ -130,7 +130,7 @@ function Receipt() {
                 }
               type="submit">Thêm mới</Button>
       </Row>
-     <Notify show={showNotify} handleClose={handleCloseNotify}/>
+     <Notify color="green" massage="Thêm mới nhà cung cấp thành công" show={showNotify} handleClose={handleCloseNotify}/>
     </Form>
     
     

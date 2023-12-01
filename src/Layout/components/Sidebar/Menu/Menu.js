@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 function Menu({ children }) {
-    return <nav>{children}</nav>;
+    return <nav className='sidebar-content'>{children}</nav>;
 }
 
 Menu.propTypes = {
