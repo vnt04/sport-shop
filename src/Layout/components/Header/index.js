@@ -37,7 +37,7 @@ function Header() {
     return (
         <header className={cx('wrapper')}>
             <div className={cx('content')}>
-                <div className={cx('logo')} onClick={() => {navigate('/statistics')}}>
+                <div className={cx('logo')} onClick={() => {navigate('/products')}}>
                     <img src={images.logo} alt="logo" /> 
                     <h1>SPORT SHOP</h1> 
                 </div>

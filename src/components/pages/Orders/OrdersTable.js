@@ -133,7 +133,7 @@ const columns = [
                                             <TableCell
                                                 key={column.id}
                                                 align={column.align}
-                                                style={{ fontSize: '1.8rem' ,
+                                                style={{ fontSize: '1.46rem' ,
                                                     color:
                                                       column.id === 'state'
                                                       ? 'green'

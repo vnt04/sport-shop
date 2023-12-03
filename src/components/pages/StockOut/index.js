@@ -3,6 +3,7 @@ import styles from './StockOut.module.scss';
 import classNames from 'classnames/bind';
 import routes from '../../../config/routes';
 import StockOutTable from './StockOutTable';
+import { Button } from 'react-bootstrap';
 const cx = classNames.bind(styles);
 
 function StockOut() {
@@ -17,7 +18,7 @@ function StockOut() {
         <div className={cx('wrapper')}>
             <div className={cx('header-xuat-kho')}>
                 <h1>Danh sách xuất kho</h1>
-                <button onClick={handleCreateNewClick}>Tạo mới</button>
+                <Button variant='success' onClick={handleCreateNewClick}>Tạo mới</Button>
             </div>
 
             <div className={cx('danh-sach-xuat-kho')}>

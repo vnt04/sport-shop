@@ -90,7 +90,9 @@ const columns = [
   const [selectedRowId,setSelectedRowId] = useState(null);
   const [overed,setOvered] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
+  const [showAdmin, setShowAdmin]  = useState(false);
 
+  const user = JSON.parse(localStorage.getItem('loggedInUser'));
   let unitData = {};
   let cateData = {};
   const getData = async () => {
@@ -148,12 +150,18 @@ const columns = [
   };
   const handleClose = () =>{
     setShowSellForm(false);
+    setShowAdmin(false);
     setOvered(false);
   }
   const handleSell = (id) =>{
-    setShowSellForm(true);
+    if(user.type === '2'){
+      setShowAdmin(true);
+    }
+    else {
+      setShowSellForm(true);
+      setSelectedRowId(id);
+    }
     
-    setSelectedRowId(id);
   }
   const handleOK = () => {
   axios.get('http://localhost:3005/product/read')
@@ -218,6 +226,7 @@ const columns = [
 
   return (
     <>
+        <Notify show={showAdmin} massage='Bạn phải đăng nhập với tư cách admin' color='red' handleClose={handleClose} />
         <Notify show = {overed} color='red' massage="Số lượng sản phẩm trong kho không đủ" handleClose={handleClose}/>
         <SellForm show={showSellForm} formData={formData} setFormData={setFormData} handleClose={handleClose} save={handleOK} />
         <Paper sx={{ width: '100%', overflow: 'scroll' }}>

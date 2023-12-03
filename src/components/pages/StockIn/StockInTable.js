@@ -266,7 +266,7 @@ const columns = [
                                                 align={column.align}
                                                 
                                                 style={{ 
-                                                  fontSize: '1.24rem', 
+                                                  fontSize: '1.28rem', 
                                                   fontWeight: '3rem' ,
                                                   color:
                                                     column.id === 'state'

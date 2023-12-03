@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
           setIsLoggedIn(true);
           setShowLoginSuccess(true);
           localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('loggedInUser', JSON.stringify({ email: formLogin.email, password: formLogin.password }));
+          localStorage.setItem('loggedInUser', JSON.stringify({ email: formLogin.email, password: formLogin.password,type: account.type }));
           
           
           setTimeout(() => {
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
           setTimeout(() => {
             handleCloseNotify();
           }, 700);
-          window.location.href = '/statistics';
+          window.location.href = '/products';
         }, 700);
         }
       })

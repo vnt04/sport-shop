@@ -10,6 +10,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Button } from 'react-bootstrap';
 import UpdatePrice from './UpdatePrice';
+import Notify from '~/components/Notify';
 
 
 const columns = [
@@ -81,7 +82,9 @@ function StoreTable({ searchQuery,sortOrder }) {
     const [formData,setFormData] = useState(null);
     const [filteredData, setFilteredData] = useState([]);
     const [sortedData, setSortedData] = useState([]);
+    const [showAdmin, setShowAdmin]  = useState(false);
 
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -139,6 +142,7 @@ function StoreTable({ searchQuery,sortOrder }) {
       
   const handleClose = () =>{
     setShowUpdatePrice(false);
+    setShowAdmin(false);
   }
   const handleOK = () =>{
     axios.post(`http://localhost:3005/store/update/${selectedRowId}`,formData)
@@ -159,8 +163,14 @@ function StoreTable({ searchQuery,sortOrder }) {
     setShowUpdatePrice(false);
   }
   const handleUpdate = (id) =>{
-    setShowUpdatePrice(true);
-    setSelectedRowId(id);
+    if(user.type==='2'){
+      setShowAdmin(true);
+    }
+    else{
+      setShowUpdatePrice(true);
+      setSelectedRowId(id);
+    }
+    
   }
   //search
   useEffect(() => {
@@ -187,6 +197,7 @@ function StoreTable({ searchQuery,sortOrder }) {
 
   return (
     <>  
+        <Notify show={showAdmin} massage='Bạn phải đăng nhập với tư cách admin' color='red' handleClose={handleClose} />
         <UpdatePrice show={showUpdatePrice} formData={formData} setFormData={setFormData} handleClose={handleClose} save={handleOK}/>
         <Paper sx={{ width: '100%', overflow: 'scroll' }}>
             <TableContainer sx={{ maxHeight: 440 }}>
@@ -200,7 +211,7 @@ function StoreTable({ searchQuery,sortOrder }) {
                                     style={{
                                         minWidth: column.minWidth,
                                         fontWeight: 'bold',
-                                        fontSize: '1.3rem',
+                                        fontSize: '1.6rem',
                                     }}
                                 >
                                     {column.label}
@@ -238,7 +249,7 @@ function StoreTable({ searchQuery,sortOrder }) {
                                             <TableCell
                                                 key={column.id}
                                                 align={column.align}
-                                                style={{ fontSize: '1.26rem', color:(column.id ==='state')?'red':'black' }}
+                                                style={{ fontSize: '1.36rem', color:(column.id ==='state')?'red':'black' }}
                                             >
                                                 {column.format && typeof value === 'number'
                                                     ? column.format(value)

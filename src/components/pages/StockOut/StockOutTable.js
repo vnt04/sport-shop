@@ -8,6 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { FaCheck, FaRegWindowClose } from 'react-icons/fa';
 
 const columns = [
   {
@@ -20,7 +22,7 @@ const columns = [
   {
     id: 'tenSP',
     label: 'Tên sản phẩm',
-    minWidth: 0,
+    maxWidth:20,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
@@ -39,21 +41,20 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'dayOut',
+    id: 'ngayXuat',
     label: 'Ngày xuất',
     minWidth: 100,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'creator',
+    id: 'user',
     label: 'Tạo bởi',
-    minWidth: 50,
     align: 'center',
     format: (value) => value.toFixed(2),
   },
   {
-    id:'money',
+    id:'thanhTien',
     label: 'Thành tiền',
     minWidth: 0,
     align: 'center',
@@ -68,7 +69,7 @@ const columns = [
   },
   {
     id: 'act',
-    label: 'Hành động',
+    label: 'Duyệt',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
@@ -98,7 +99,21 @@ const columns = [
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  useEffect(() => {
+    axios.get('http://localhost:3005/stockOut/read')
+      .then(function (response) {
+        setData(response.data.reverse());
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }, []);
+  const handleAccept = () =>{
 
+  }
+  const handleNoAccept = () =>{
+
+  }
   return (
         <Paper sx={{ width: '100%', overflow: 'scroll' }}>
             <TableContainer sx={{ maxHeight: 440 }}>
@@ -112,7 +127,7 @@ const columns = [
                                     style={{
                                         minWidth: column.minWidth,
                                         fontWeight: 'bold',
-                                        fontSize: '1.8rem',
+                                        fontSize: '1.38rem',
                                     }}
                                 >
                                     {column.label}
@@ -121,7 +136,8 @@ const columns = [
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => {
+                          const counter = page * rowsPerPage + index + 1;
                             return (
                                 <TableRow
                                     hover
@@ -131,12 +147,33 @@ const columns = [
                                     key={row.code}
                                 >
                                     {columns.map((column) => {
-                                        const value = row[column.id];
+                                        let value = row[column.id];
+                                        if (column.id === 'stt') {
+                                          value = counter;
+                                        } else if (column.id === 'act') {
+                                          value = 
+                                            <Dropdown>
+                                              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                                  ...           
+                                                </Dropdown.Toggle>                         
+
+                                                <Dropdown.Menu>
+                                                  <Dropdown.Item onClick={() => handleAccept(row['_id']) } style={{ fontSize: '1.2rem', color: 'green' }}>
+                                                    <FaCheck style={{fontSize:'1.2rem', marginRight: '5px' }} /> Duyệt
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item onClick={()=>handleNoAccept(row['_id'])} style={{ fontSize: '1.2rem', color: 'red' }}>
+                                                    <FaRegWindowClose style={{fontSize:'1.2rem', marginRight: '5px' }} /> Không duyệt
+                                                  </Dropdown.Item>
+                                                </Dropdown.Menu>        
+                                            </Dropdown>
+                                        }else {
+                                          value = row[column.id];
+                                        }
                                         return (
                                             <TableCell
                                                 key={column.id}
                                                 align={column.align}
-                                                style={{ fontSize: '1.8rem' }}
+                                                style={{ fontSize: '1.28rem', color: (column.id === 'state')?'green':'black' }}
                                             >
                                                 {column.format && typeof value === 'number'
                                                     ? column.format(value)
