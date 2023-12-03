@@ -72,7 +72,7 @@ const columns = [
   },
 ];
 
-function StoreTable({ searchQuery }) {
+function StoreTable({ searchQuery,sortOrder }) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [data, setData] = useState([]);
@@ -80,6 +80,8 @@ function StoreTable({ searchQuery }) {
     const [showUpdatePrice,setShowUpdatePrice] = useState(false);
     const [formData,setFormData] = useState(null);
     const [filteredData, setFilteredData] = useState([]);
+    const [sortedData, setSortedData] = useState([]);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -169,6 +171,20 @@ function StoreTable({ searchQuery }) {
     );
     setFilteredData(filtered);
     }, [searchQuery, data]);
+
+  //sort
+  useEffect(() => {
+    let sortedData = [...filteredData];
+
+    if (sortOrder === 'ascending') {
+      sortedData.sort((a, b) => a.giaBan - b.giaBan);
+    } else if (sortOrder === 'descending') {
+      sortedData.sort((a, b) => b.giaBan - a.giaBan);
+    }
+
+    setSortedData(sortedData);
+  }, [filteredData, sortOrder]);
+
   return (
     <>  
         <UpdatePrice show={showUpdatePrice} formData={formData} setFormData={setFormData} handleClose={handleClose} save={handleOK}/>
@@ -193,7 +209,7 @@ function StoreTable({ searchQuery }) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => {
+                        {sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => {
                           const counter = page * rowsPerPage + index + 1;
                             return (
                                 <TableRow

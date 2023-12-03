@@ -9,6 +9,9 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Notify from '~/components/Notify';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import FormUpdate from './FormUpdate';
 
 
 const columns = [
@@ -95,6 +98,12 @@ const columns = [
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [data, setData] = useState([]);
+  const [deletedUserId, setDeletedUserId] = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [showDeleteWarning, setShowDeleteWarning] = useState(false);
+  const [showFormUpdate, setShowFormUpdate]  = useState(false);
+  const [updatedUserId, setUpdatedUserId] = useState(null);
+  const [formData, setFormData] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:3005/user/read')
@@ -114,8 +123,91 @@ const columns = [
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+    const handleCloseNotify = () =>{
+      setDeleteConfirm(false);
+      setShowDeleteWarning(false);
+      setDeletedUserId(null);
+    }
+  //Delete
+  const handleOK = () =>{
+    const id = deletedUserId;
+    if(deleteConfirm && id)  {
+      axios.delete(`http://localhost:3005/user/delete/${id}`)
+      .then(function (response) {
+        setData(data.filter(item => item._id !== id));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+           
+    }
+    setDeleteConfirm(false);
+    setShowDeleteWarning(false);
+    setDeletedUserId(null);
+  }
+  const handleDelete = (id) => {
+    setShowDeleteWarning(true); 
+    setDeleteConfirm(true);
+    setDeletedUserId(id);  
+  }
 
+  //Update
+  const handleUpdate = (id) => {
+    setShowFormUpdate(true);
+    axios.get('http://localhost:3005/user/read')
+      .then(function (response) {
+        response.data.forEach(element => {
+          if(element._id === id){
+              const newData = {
+              chucVu: element.chucVu,
+              tenNv: element.tenNv,
+              sex: element.sex,
+              sdt: element.sdt,
+              mail: element.mail,
+              address: element.address,
+              day: element.day,
+              maThue: element.maThue,
+              luongCoBan: element.luongCoBan,
+              hsLuong: element.hsLuong,
+              phuCap: element.phuCap,
+          };
+          setFormData(newData);
+          setUpdatedUserId(id);
+        }   
+        });
+      })
+      
+    }
+  const handleCloseFormUpdate = () =>{
+    setShowFormUpdate(false);
+  }
+  const saveChange = () =>{
+    const id = updatedUserId;
+    const luongCoBan = parseFloat(formData['luongCoBan']);
+        const hsLuong = parseFloat(formData['hsLuong']);
+        const phuCap = parseFloat(formData['phuCap']);
+
+        if (!isNaN(luongCoBan) && !isNaN(hsLuong) && !isNaN(phuCap)) {
+          formData['luongThang'] = luongCoBan * hsLuong + phuCap;
+        } else {
+          console.log('Có lỗi xảy ra trong việc đọc dữ liệu từ form.');
+        }
+    axios.put(`http://localhost:3005/user/update/${id}`, formData)
+      .then(function(response){
+        axios.get('http://localhost:3005/user/read')
+          .then(function(response){
+            setData(response.data);
+          })
+        setShowFormUpdate(false);
+      })
+      .catch(function(error){
+        console.log('Lỗi khi cập nhật dữ liệu', error);
+      })
+  }
   return (
+    <>
+      <FormUpdate show={showFormUpdate} handleClose={handleCloseFormUpdate} formData={formData} setFormData={setFormData} save={saveChange}/>
+      <Notify massage="Bạn muốn xóa nhân viên này! " color='#f44336' show={showDeleteWarning} handleClose={handleCloseNotify} handleOK={handleOK} type='2'/>
         <Paper sx={{ width: '100%', overflow: 'scroll' }}>
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -158,9 +250,13 @@ const columns = [
                                                         </Dropdown.Toggle>                         
 
                                                         <Dropdown.Menu>
-                                                            <Dropdown.Item style={{color: 'red', fontSize:'1.2rem'}} href="#/action-1">Xóa</Dropdown.Item>
-                                                            <Dropdown.Item style={{color: 'red', fontSize:'1.2rem'}} href="#/action-2">Sửa</Dropdown.Item>
-                                                        </Dropdown.Menu>            
+                                                          <Dropdown.Item onClick={() => handleDelete(row['_id']) } style={{ fontSize: '1.2rem', color: 'red' }}>
+                                                            <AiOutlineDelete style={{ marginRight: '5px' }} /> Xóa
+                                                          </Dropdown.Item>
+                                                          <Dropdown.Item onClick={()=>handleUpdate(row['_id'])} style={{ fontSize: '1.2rem', color: 'orange' }}>
+                                                            <AiOutlineEdit style={{ marginRight: '5px' }} /> Chỉnh Sửa
+                                                          </Dropdown.Item>
+                                                        </Dropdown.Menu>        
                                                     </Dropdown>)
                                         }
                                          else {
@@ -194,6 +290,7 @@ const columns = [
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </Paper>
+      </>
   );
 }
 

@@ -12,11 +12,11 @@ function Store() {
     const [searchQuery, setSearchQuery] = useState('');
     const [sortOrder, setSortOrder] = useState('');
     const handleSearch = (query) => {
-    setSearchQuery(query); 
-  };
-  const handleSortChange = (selectedOption) => {
+        setSearchQuery(query); 
+    };
+    const handleSortChange = (selectedOption) => {
         if (selectedOption.value === 'ascending' || selectedOption.value === 'descending') {
-            setSortOrder(selectedOption.value); // Lưu loại sắp xếp được chọn vào state
+            setSortOrder(selectedOption.value); 
         }
     };
     return (
