@@ -73,7 +73,7 @@ const columns = [
  },
 ];
 
-function SuppliersTable() {
+function SuppliersTable({ searchQuery }) {
   //State
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -83,6 +83,9 @@ function SuppliersTable() {
   const [deletedSupplierId, setDeletedSupplierId] = useState(null);
   const [showFormUpdate, setShowFormUpdate]  = useState(false);
   const [formData, setFormData] = useState(false);
+  const [updatedSupplierId, setUpdatedSupplierId] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
+
   useEffect(() => {
     axios.get('http://localhost:3005/supplier/read')
       .then(function (response) {
@@ -146,19 +149,42 @@ function SuppliersTable() {
               address: element.address
           };
           setFormData(newData);
+          setUpdatedSupplierId(id);
         }   
         });
       })
+      
     }
   const handleCloseFormUpdate = () =>{
     setShowFormUpdate(false);
   }
   const saveChange = () =>{
-    
+    const id = updatedSupplierId;
+    axios.put(`http://localhost:3005/supplier/update/${id}`, formData)
+      .then(function(response){
+        axios.get('http://localhost:3005/supplier/read')
+          .then(function(response){
+            setData(response.data);
+          })
+        setShowFormUpdate(false);
+      })
+      .catch(function(error){
+        console.log('Lỗi khi cập nhật dữ liệu', error);
+      })
   }
+
+  //Search
+  useEffect(() => {
+    // Lọc dữ liệu dựa trên từ khóa tìm kiếm
+    const filtered = data.filter(
+      (item) =>
+        item.tenNcc.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredData(filtered);
+    }, [searchQuery, data]);
   return (
     <>
-    <FormUpdate show={showFormUpdate} handleClose={handleCloseFormUpdate} formData={formData} save={saveChange}/>
+    <FormUpdate show={showFormUpdate} handleClose={handleCloseFormUpdate} formData={formData} setFormData={setFormData} save={saveChange}/>
     <Notify massage="Bạn muốn xóa nhà cung cấp! " color='#f44336' show={showDeleteWarning} handleClose={handleCloseNotify} handleOK={handleOK} type='2'/>
     <Paper sx={{ width: '100%', overflow: 'scroll' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -181,7 +207,7 @@ function SuppliersTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+            {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               const counter = page * rowsPerPage + index + 1;
               return (
                 <TableRow
@@ -189,7 +215,7 @@ function SuppliersTable() {
                   role="checkbox"
                   style={{ cursor: 'pointer' }}
                   tabIndex={-1}
-                  key={row.code}
+                  key={row._id}
                 >
                   {columns.map((column) => {
                     let value = row[column.id];

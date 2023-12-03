@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Statistics({ children }) {
+function Data({ children }) {
     return <React.Fragment>{children}</React.Fragment>;
 }
 
-Statistics.propTypes = {
+Data.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export default Statistics;
+export default Data;

@@ -1,0 +1,31 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+}
+.loc-san-pham {
+    position: relative;
+    height: 60px;
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    z-index: 10;
+    align-items: center;
+
+    h1 {
+        margin-left: 20px;
+    }
+}
+.san-pham-theo-loai {
+    display: flex;
+    margin-top: 30px;
+}
+.search {
+    margin-left: 13px;
+    width: 500px;
+}
+
+.danh-sach-san-pham {
+    width: 50%;
+    margin-top: 5px;
+    margin-left: 30px;
+}

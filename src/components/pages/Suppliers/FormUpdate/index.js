@@ -6,7 +6,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
-function FormUpdate({show ,handleClose,formData,save }) {
+function FormUpdate({show ,handleClose,formData,save,setFormData  }) {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if(save) {
+      setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    }
+  };
   return (
     <>
       <Modal show={show} onHide={handleClose} size="lg">
@@ -23,6 +32,7 @@ function FormUpdate({show ,handleClose,formData,save }) {
                         type="text"
                         value={formData.tenNcc}
                         className="form-control-lg"
+                        onChange={handleInputChange}
                         style={{fontSize:'18px',marginTop: '5px'}}
                     />
                 </Form.Group>
@@ -35,6 +45,7 @@ function FormUpdate({show ,handleClose,formData,save }) {
                     type="text"
                     value={formData.manager}
                     className="form-control-lg"
+                    onChange={handleInputChange}
                     style={{fontSize:'18px',marginTop: '5px'}}
                 />
                 </Form.Group>
@@ -48,6 +59,7 @@ function FormUpdate({show ,handleClose,formData,save }) {
                     required
                     type="text"
                     value={formData.sdt}
+                    onChange={handleInputChange}
                     className="form-control-lg"
                     style={{fontSize:'18px',marginTop: '5px'}}
                   />
@@ -61,6 +73,7 @@ function FormUpdate({show ,handleClose,formData,save }) {
                     type="text"
                     value={formData.mail}
                     className="form-control-lg"
+                    onChange={handleInputChange}
                     style={{fontSize:'18px',marginTop: '5px'}}
                   />
                 </Form.Group>
@@ -76,6 +89,7 @@ function FormUpdate({show ,handleClose,formData,save }) {
                     type="text"
                     value={formData.maThue}
                     className="form-control-lg"
+                    onChange={handleInputChange}
                     style={{fontSize:'18px',marginTop: '5px'}}
                   />
                 </Form.Group>
@@ -88,6 +102,7 @@ function FormUpdate({show ,handleClose,formData,save }) {
                   type="text"
                   value={formData.address}
                   className="form-control-lg"
+                  onChange={handleInputChange}
                   style={{fontSize:'18px',marginTop: '5px'}}
                 />
               </Form.Group>

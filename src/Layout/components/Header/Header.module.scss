@@ -34,10 +34,13 @@
 }
 
 .user-name {
-    margin-left: calc(10px + 900px);
     font-size: 2rem;
     font-weight: 10px;
     color: rgb(253, 216, 53);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 170px;
 }
 .action {
     align-items: center;
@@ -45,13 +48,36 @@
     margin-right: 20px;
 }
 .action-icon {
-    width: 40px;
+    width: 36px; /* Kích thước lớn hơn cho icon Notify */
+    height: 36px; /* Kích thước lớn hơn cho icon Notify */
     margin-right: 10px;
     transition: transform 0.3s ease;
     border-radius: 50%;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Thêm thuộc tính position để có thể sử dụng z-index */
+    z-index: 0; /* Đặt z-index thấp hơn để icon Notify hiển thị phía dưới unread-counter */
 }
 
 .action-icon:hover {
     transform: scale(1.1);
+}
+
+.unread-count {
+    background-color: red;
+    color: white;
+    border-radius: 80%;
+    padding: 4px 8px;
+    font-size: 8px;
+    position: absolute; /* Đặt vị trí tuyệt đối */
+    top: -6px; /* Điều chỉnh vị trí top để nằm phía trên icon */
+    right: -6px; /* Điều chỉnh vị trí right để nằm phía bên phải của icon */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 20px;
+    min-height: 20px;
+    z-index: 1; /* Đặt z-index cao hơn để unread-counter nằm trên icon Notify */
 }

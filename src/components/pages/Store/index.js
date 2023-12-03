@@ -3,20 +3,22 @@ import styles from './Store.module.scss';
 import Select from 'react-select';
 import StoreTable from "./StoreTable";
 import { useState } from 'react';
+import Search from "~/components/Search";
 
 
 const cx = classNames.bind(styles);
 
 function Store() {
-    const [selectedType, setSelectedUser] = useState(null);
-
-    const handleTypeChange = (selectedOption) => {
-        setSelectedUser(selectedOption);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sortOrder, setSortOrder] = useState('');
+    const handleSearch = (query) => {
+    setSearchQuery(query); 
+  };
+  const handleSortChange = (selectedOption) => {
+        if (selectedOption.value === 'ascending' || selectedOption.value === 'descending') {
+            setSortOrder(selectedOption.value); // Lưu loại sắp xếp được chọn vào state
+        }
     };
-    const Types = [
-       {label: 'Giá: tăng dần', value: 'inc'},
-       {label: 'Giá: giảm dần', value: 'dec'}
-    ];
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header-store')}>
@@ -29,25 +31,18 @@ function Store() {
                 <div className={cx('loc-san-pham')}>
                     <h2 style={{marginLeft:'20px'}}>Bộ lọc</h2>
                     <div className={cx('sap-xep-theo')}>
-                    <Select
-                        value={selectedType}
-                        onChange={handleTypeChange}
-                        options={Types}
-                        isSearchable
-                        placeholder="Giá"
-                        className="form-control-lg"
-                    />
+                        <Select
+                            options={[
+                                { value: 'ascending', label: 'Giá tăng dần' },
+                                { value: 'descending', label: 'Giá giảm dần' },
+                            ]}
+                            onChange={handleSortChange}
+                            placeholder="Sắp xếp"
+                        />
                     </div>
 
                     <div className={cx('tim-ten-san-pham')}>
-                    <Select
-                        value={selectedType}
-                        onChange={handleTypeChange}
-                        options={Types}
-                        isSearchable
-                        placeholder="Nhập tên sản phẩm cần tìm"
-                        className="form-control-lg"
-                    />
+                        <Search placeholder="Nhập tên sản phẩm cần tìm" onChange={handleSearch} />
                     </div>
 
                     
@@ -56,7 +51,7 @@ function Store() {
             </div>
 
             <div className={cx('ds-san-pham')}>
-                <StoreTable/>
+                <StoreTable searchQuery={searchQuery} sortOrder={sortOrder}/>
             </div>                  
         </div>
 

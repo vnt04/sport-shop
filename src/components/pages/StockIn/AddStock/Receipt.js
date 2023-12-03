@@ -10,24 +10,25 @@ import routes from '~/config/routes'
 
 function Receipt() {    
     const [showNotify, setNotify] = useState(false); 
+
     const handleSubmit = async (event) => {
       event.preventDefault();
+
       const formData = new FormData(event.target);
       const formObject = {};
       formData.forEach((value,key) => {
         formObject[key] = value;
       });
       formObject['ngayNhap'] = currentDate;
-      formObject['state'] = 'Chờ duyệt'
-      try{
-        
-        const response = await axios.post('http://localhost:3005/stockIn/add',formObject)
-        console.log('Response from server: ',response.data);
-      }
-      catch(error){
-        console.log('Error sending data: ', error);
-      }
-      setNotify(true);
+      formObject['state'] = 'Chờ duyệt';
+      
+      try {
+        const response = await axios.post('http://localhost:3005/stockIn/add', formObject);
+        console.log('Response from server:', response.data); 
+        setNotify(true);    
+      } catch (error) {
+      console.error('Error sending data:', error);
+    }
     };
     const handleCloseNotify = () => {
       setNotify(false);
@@ -181,17 +182,6 @@ useEffect(() => {
             className="form-control-lg"
           />
         </Form.Group>
-        <Form.Group as={Col} md="4" controlId="validationCustom01">
-          <Form.Label className='h2'>Mã phiếu nhập</Form.Label>
-          <Form.Control
-            required
-            name = "maPhieu"
-            type="text"
-            placeholder="Mã phiếu nhập"
-            className="form-control-lg"
-            style={{fontSize:'18px',marginTop: '5px'}}
-          />
-        </Form.Group>
         <Form.Group as={Col} md="4" controlId="validationCustom02">
           <Form.Label className='h2'>Ngày nhập </Form.Label>
           <Form.Control
@@ -311,7 +301,7 @@ useEffect(() => {
         }
        type="submit">Thêm mới</Button>
       </Row>
-      <Notify show={showNotify} handleClose={handleCloseNotify}/>
+      <Notify color="green" massage = "Nhập kho thành công!" show={showNotify} handleClose={handleCloseNotify}/>
     </Form>
   );
 }

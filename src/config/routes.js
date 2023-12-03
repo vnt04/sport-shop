@@ -1,6 +1,6 @@
 const routes = {
     login: '/',
-    home: '/home',
+    category: '/category',
     products: '/products',
     suppliers:'/suppliers',
     addSupplier:'/suppliers/add',

@@ -1,10 +1,10 @@
-import styles from '../Home.module.scss';
+import styles from '../Statistics.module.scss';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-function StatisticsItems({ title, icon, quantity }) {
+function DataItems({ title, icon, quantity }) {
     return (
         <div className={cx('statistics-items')}>
             <div className={cx('icon-title')}>
@@ -16,10 +16,10 @@ function StatisticsItems({ title, icon, quantity }) {
     );
 }
 
-StatisticsItems.prototype = {
+DataItems.prototype = {
     title: PropTypes.string.isRequired,
     icon: PropTypes.node.isRequired,
     quantity: PropTypes.number.isRequired,
 };
 
-export default StatisticsItems;
+export default DataItems;

@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'; // Import useHistory từ React Router
 import styles from './StockOut.module.scss';
 import classNames from 'classnames/bind';
-import Time from '../Home/Time';
 import routes from '../../../config/routes';
 import StockOutTable from './StockOutTable';
 const cx = classNames.bind(styles);
@@ -22,15 +21,6 @@ function StockOut() {
             </div>
 
             <div className={cx('danh-sach-xuat-kho')}>
-                <div className={cx('filter')}>
-                    <div className={cx('time')}>
-                        <p>Từ ngày:</p>
-                        <Time />
-                        <p>Đến ngày:</p>
-                        <Time />
-                    </div>
-                    <button className={cx('button-search')}>Tìm</button>
-                </div>
 
                 {/* Table */}
                 <div style={{padding: '20px'}}>

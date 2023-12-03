@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
           setTimeout(() => {
             handleCloseNotify();
           }, 700);
-          window.location.href = '/home';
+          window.location.href = '/statistics';
         }, 700);
         }
       })

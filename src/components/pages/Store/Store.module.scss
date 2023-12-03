@@ -14,11 +14,13 @@
     margin-top: 10px;
     display: flex;
     align-items: center;
-    background-color: orange;
+    background-color: rgb(226, 222, 222);
 }
 .sap-xep-theo {
     margin-left: 50px;
     width: 160px;
+    position: relative;
+    z-index: 1;
 }
 .tim-ten-san-pham {
     width: 600px;
@@ -28,4 +30,6 @@
     width: 99%;
     height: 50px;
     margin-left: 20px;
+    position: relative;
+    z-index: 0;
 }

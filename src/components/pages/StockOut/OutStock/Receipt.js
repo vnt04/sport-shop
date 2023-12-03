@@ -67,16 +67,6 @@ function Receipt() {
             className="form-control-lg"
           />
         </Form.Group>
-        <Form.Group as={Col} md="4" controlId="validationCustom01">
-          <Form.Label className='h2'>Mã phiếu xuất</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            placeholder="Mã phiếu xuất"
-            className="form-control-lg"
-            style={{fontSize:'18px',marginTop: '5px'}}
-          />
-        </Form.Group>
         <Form.Group as={Col} md="4" controlId="validationCustom02">
           <Form.Label className='h2'>Ngày xuất </Form.Label>
           <Form.Control

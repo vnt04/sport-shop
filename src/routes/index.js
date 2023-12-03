@@ -2,7 +2,7 @@ import config from '~/config';
 
 // Pages
 import Login from '~/components/Login';
-import Home from '../components/pages/Home'
+import Category from '../components/pages/Category'
 import Suppliers from '~/components/pages/Suppliers';
 import AddSupplier from '~/components/pages/Suppliers/AddSupplier';
 import Orders from '../components/pages/Orders'
@@ -20,7 +20,7 @@ import AddStock from '~/components/pages/StockIn/AddStock';
 // Public routes
 const publicRoutes = [
     { path: config.routes.login, component: Login },
-    { path: config.routes.home, component: Home },
+    { path: config.routes.category, component: Category },
     { path: config.routes.suppliers, component: Suppliers },
     { path: config.routes.addSupplier, component: AddSupplier },
     { path: config.routes.products, component: Products },

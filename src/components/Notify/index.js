@@ -11,11 +11,11 @@ function Notify({ color, massage, show, type, handleOK, handleClose }) {
         {massage}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={handleClose} size="lg">
           Đóng
         </Button>
         {type === '2' && (
-          <Button variant="secondary" onClick={handleOK}>
+          <Button variant="secondary" onClick={handleOK} size="lg">
             Đồng ý
           </Button>
         )}

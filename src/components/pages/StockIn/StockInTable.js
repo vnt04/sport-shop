@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FaCheck, FaRegWindowClose } from 'react-icons/fa';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Notify from '~/components/Notify';
 
 const columns = [
   {
@@ -75,7 +77,7 @@ const columns = [
   },
   {
     id: 'act',
-    label: 'Hành động',
+    label: 'Duyệt',
     minWidth: 0,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
@@ -84,27 +86,30 @@ const columns = [
   const getStatusColor = (status) => {
   switch (status) {
     case 'Chờ duyệt':
-      return 'orange'; // Màu cho trạng thái Chờ duyệt
+      return 'orange'; 
     case 'Đã duyệt':
-      return 'green'; // Màu cho trạng thái Đã duyệt
+      return 'green'; 
     case 'Không được duyệt':
-      return 'red'; // Màu cho trạng thái Không được duyệt
+      return 'red'; 
     default:
-      return 'black'; // Màu mặc định
+      return 'black'; 
   }
-};
+  };
 
  function StockInTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [data, setData] = useState([]);
+  const [showAccept,setShowAccept] = useState(false);
+  const [showNoAccept,setShowNoAccept] = useState(false);
+  const [selectedRowId,  setSelectedRowId] = useState(null);
 
 
   //gọi api hiển thị ra bảng
   useEffect(() => {
     axios.get('http://localhost:3005/stockIn/read')
       .then(function (response) {
-        setData(response.data);
+        setData(response.data.reverse());
       })
       .catch(function (error) {
         console.log(error);
@@ -121,10 +126,82 @@ const columns = [
   };
   
   //duyệt phiếu nhập
+  const handleAccept = (id)=>{
+    setShowAccept(true);
+    setSelectedRowId(id);
+  }
+  const handleClose = () =>{
+    setShowAccept(false);
+    setShowNoAccept(false);
+  }
+  const handleOKAC = () => {
+  axios
+    .put(`http://localhost:3005/stockIn/update/${selectedRowId}`, { note: 'accept' })
+    .then(function (response) {
+      axios.get('http://localhost:3005/stockIn/read').then(function (response) {
+        setData(response.data.reverse());
+      });
+      setShowAccept(false);
+
+      const Accepted = data.find((product) => product._id === selectedRowId);
+      Promise.all([
+        axios.get('http://localhost:3005/product/read'),
+        axios.get('http://localhost:3005/category/read'),
+        axios.get('http://localhost:3005/unit/read'),
+      ])
+        .then(function (responses) {
+          const [products, categories, units] = responses;
+
+          const maSP = products.data.find((product) => product.tenSP === Accepted.tenSP)?.maSP;
+          const maLoai = categories.data.find((loai) => loai.tenLoai === Accepted.loaiSP)?.maLoai;
+          const maDVT = units.data.find((dvt) => dvt.tenDVT === Accepted.dvt)?.maDVT;
+
+          const AcceptedProduct = {
+            tenSP: Accepted.tenSP,
+            gia: Accepted.giaNhap,
+            state: 'Tồn kho',
+            slKho: Accepted.soLuong,
+            maLoai,
+            maDVT,
+            maSP,
+          };
+
+          axios.post('http://localhost:3005/product/add', AcceptedProduct).then(function (response) {});
+        })
+        .catch(function (error) {
+          console.log('Lỗi khi lấy dữ liệu', error);
+        });
+    })
+    .catch(function (error) {
+      console.log('Lỗi khi cập nhật dữ liệu', error);
+    });
+};
 
 
+  // Không duyệt
+  const handleNoAccept = (id) =>{
+    setShowNoAccept(true);
+    setSelectedRowId(id);
+  }
+  const handleOKNoAC = () => {
+    axios.put(`http://localhost:3005/stockIn/update/${selectedRowId}`,{note:'NoAccept'})
+      .then(function(response){
+        axios.get('http://localhost:3005/stockIn/read')
+          .then(function(response){
+            setData(response.data.reverse());
+          })
+        setShowNoAccept(false);
+      })
+      .catch(function(error){
+        console.log('Lỗi khi cập nhật dữ liệu', error);
+      }) 
+  }
 
   return (
+    <>
+
+      <Notify color='red' show={showNoAccept} massage="Bạn sẽ không duyệt phiếu nhập kho này?" type='2' handleClose={handleClose} handleOK={handleOKNoAC}/>
+      <Notify color='green' show={showAccept} massage="Bạn muốn duyệt phiếu nhập kho này?" type='2' handleClose={handleClose} handleOK={handleOKAC}/>
         <Paper sx={{ width: '100%', overflow: 'scroll' }}>
             <TableContainer sx={{ maxHeight: 500 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -163,21 +240,19 @@ const columns = [
                                         } else if (column.id === 'act') {
                                           value = 
                                             <Dropdown>
-                                                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                                  ...
-                                                </Dropdown.Toggle>
+                                              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                                  ...           
+                                                </Dropdown.Toggle>                         
 
                                                 <Dropdown.Menu>
-                                                  <Dropdown.Item 
-                                                    style={{color: 'green', fontSize:'1.2rem'}} 
-                                                    >Duyệt
+                                                  <Dropdown.Item onClick={() => handleAccept(row['_id']) } style={{ fontSize: '1.2rem', color: 'green' }}>
+                                                    <FaCheck style={{fontSize:'1.2rem', marginRight: '5px' }} /> Duyệt
                                                   </Dropdown.Item>
-                                                  <Dropdown.Item 
-                                                    style={{color: 'red', fontSize:'1.2rem'}}
-                                                    >Không duyệt
+                                                  <Dropdown.Item onClick={()=>handleNoAccept(row['_id'])} style={{ fontSize: '1.2rem', color: 'red' }}>
+                                                    <FaRegWindowClose style={{fontSize:'1.2rem', marginRight: '5px' }} /> Không duyệt
                                                   </Dropdown.Item>
-                                                </Dropdown.Menu>
-                                              </Dropdown>
+                                                </Dropdown.Menu>        
+                                            </Dropdown>
                                           
                                         } else if(column.id === 'thanhTien'){
                                             value = parseFloat(row['giaNhap']) * parseFloat(row['soLuong']) * (1+parseFloat(row['chietKhau'])/100.0 );
@@ -221,6 +296,7 @@ const columns = [
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </Paper>
+        </>
   );
 }
 

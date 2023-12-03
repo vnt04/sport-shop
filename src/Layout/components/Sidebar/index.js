@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import styles from './Sidebar.module.scss';
 import Menu, { MenuItem } from './Menu';
 import Button from 'react-bootstrap/Button';
-import { HomeIcon, CategoryIcon, OrdersIcon, StoreIcon, ImpWarehouseIcon, ExpWarehouseIcon, UsersIcon, BellIcon, ChartIcon } from '~/assets/Icons';
+import { CategoryIcon, OrdersIcon, StoreIcon, ImpWarehouseIcon, ExpWarehouseIcon, UsersIcon, BellIcon, ChartIcon, ProductIcon } from '~/assets/Icons';
 import config from '~/config';
 import { useAuth } from '~/components/Login/AuthContext';
 const cx = classNames.bind(styles);
@@ -22,9 +22,9 @@ function Sidebar() {
 
                     <div className='sidebar-content'>
                         <Menu>
-                            <MenuItem title="Trang chủ" to={config.routes.home} icon={<HomeIcon />} />
+                            <MenuItem title="Sản phẩm" to={config.routes.products} icon={<ProductIcon />} />
+                            <MenuItem title="Loại sản phẩm" to={config.routes.category} icon={<CategoryIcon />} />
                             <MenuItem title="Nhà cung cấp" to={config.routes.suppliers} icon={<BellIcon />} />
-                            <MenuItem title="Sản phẩm" to={config.routes.products} icon={<CategoryIcon />} />
                             <MenuItem title="Cửa hàng" to={config.routes.store} icon={<StoreIcon />} />
                             <MenuItem title="Đơn đặt hàng" to={config.routes.orders} icon={<OrdersIcon />} />
                             <MenuItem title="Nhân viên" to={config.routes.users} icon={<UsersIcon />} />

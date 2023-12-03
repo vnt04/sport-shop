@@ -11,8 +11,13 @@ const cx = classNames.bind(styles);
 function Header() {
     const navigate = useNavigate();
     const [loggedInUsername, setLoggedInUsername] = useState('')
+    const [unreadMessages, setUnreadMessages] = useState(0);
+    const [unreadNotifications, setUnreadNotifications] = useState(0);
+
     useEffect(() =>{
         const loggedInUser = localStorage.getItem('loggedInUser');
+        setUnreadMessages(3);
+        setUnreadNotifications(2);
         if (loggedInUser) {
         const user = JSON.parse(loggedInUser);
         
@@ -32,7 +37,7 @@ function Header() {
     return (
         <header className={cx('wrapper')}>
             <div className={cx('content')}>
-                <div className={cx('logo')} onClick={() => {navigate('/home')}}>
+                <div className={cx('logo')} onClick={() => {navigate('/statistics')}}>
                     <img src={images.logo} alt="logo" /> 
                     <h1>SPORT SHOP</h1> 
                 </div>
@@ -42,13 +47,21 @@ function Header() {
 
                 <div className={cx('action')}>
                     <div className={cx('action-icon')}>
-                        <NotifyIcon />
+                            <NotifyIcon />
+                            {unreadNotifications > 0 && (
+                                <span className={cx('unread-count')}>{unreadNotifications}</span>
+                            )}
+                            
                     </div>
                     <div className={cx('action-icon')}>
-                        <EmailIcon />
+                            <EmailIcon />
+                            {unreadMessages > 0 && (
+                                <span className={cx('unread-count')}>{unreadMessages}</span>
+                            )}
+                            
                     </div>
                     <div className={cx('action-icon')}>
-                        <UserIcon />
+                        <UserIcon/>
                     </div>
                 </div>
             </div>
